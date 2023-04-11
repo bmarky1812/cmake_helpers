@@ -30,6 +30,8 @@ INTERFACE
     -Wno-unused-variable
     -Wno-unused-parameter
     -Wno-unused-function
+    -Wno-unused-lambda-capture
+    -Wno-unused-local-typedef
     -Wno-switch
     -Wno-comment
     -Wno-missing-field-initializers
