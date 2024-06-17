@@ -154,17 +154,30 @@ if (WIN32)
         ${qt_loc}/mkspecs/win32-msvc
     )
     set(qt_libs
-        plugins/bearer/${qt_lib_prefix}qgenericbearer
-        lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}AccessibilitySupport
-        lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}FontDatabaseSupport
-        lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}EventDispatcherSupport
-        lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}ThemeSupport
         ${common_qt_libs}
-        lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}WindowsUIAutomationSupport
-        lib/${qt_lib_prefix}qtmain
-        lib/${qt_lib_prefix}qtfreetype
         plugins/platforms/${qt_lib_prefix}qwindows
     )
+    if (QT_VERSION_MAJOR GREATER_EQUAL 6)
+        list(APPEND qt_libs
+            lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}BundledFreetype
+            lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}EntryPoint
+        )
+        list(APPEND qt_libs_list
+            $<TARGET_OBJECTS:Qt${QT_VERSION_MAJOR}::QWindowsIntegrationPlugin_init>
+            $<TARGET_OBJECTS:Qt${QT_VERSION_MAJOR}::QWindowsIntegrationPlugin_resources_1>
+        )
+    else()
+        list(APPEND qt_libs
+            plugins/bearer/${qt_lib_prefix}qgenericbearer
+            lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}AccessibilitySupport
+            lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}FontDatabaseSupport
+            lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}EventDispatcherSupport
+            lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}ThemeSupport
+            lib/${qt_lib_prefix}Qt${QT_VERSION_MAJOR}WindowsUIAutomationSupport
+            lib/${qt_lib_prefix}qtmain
+            lib/${qt_lib_prefix}qtfreetype
+        )
+    endif()
     foreach (lib ${qt_libs})
         list(APPEND qt_libs_list "${qt_loc}/${lib}${qt_lib_suffix}")
     endforeach()

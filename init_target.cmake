@@ -23,6 +23,17 @@ function(init_target target_name) # init_target(my_target [cxx_std_..] folder_na
     endforeach()
     target_compile_features(${target_name} PRIVATE ${standard})
 
+    # Taken from Qt 6.
+    # For MSVC we need to explicitly pass -Zc:__cplusplus to get correct __cplusplus
+    # define values. According to common/msvc-version.conf the flag is supported starting
+    # with 1913.
+    # https://developercommunity.visualstudio.com/content/problem/139261/msvc-incorrectly-defines-cplusplus.html
+    # No support for the flag in upstream CMake as of 3.17.
+    # https://gitlab.kitware.com/cmake/cmake/issues/18837
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND MSVC_VERSION GREATER_EQUAL 1913)
+        target_compile_options(${target_name} PRIVATE "-Zc:__cplusplus")
+    endif()
+
     if (WIN32 AND DESKTOP_APP_SPECIAL_TARGET)
         set_property(TARGET ${target_name} APPEND_STRING PROPERTY STATIC_LIBRARY_OPTIONS "$<IF:$<CONFIG:Debug>,,/LTCG>")
     endif()

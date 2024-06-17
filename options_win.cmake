@@ -145,6 +145,16 @@ INTERFACE
     Crypt32
     Propsys
     Bcrypt
+
+    Authz
+    Dwrite
+    DXGI
+    D3D12
+    Shcore
+    Setupapi
+    Synchronization
+    Winhttp
+    WindowsApp
 )
 
 if (build_winstore)
